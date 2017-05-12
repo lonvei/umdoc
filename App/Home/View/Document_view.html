@@ -1,0 +1,30 @@
+<include file="Public/head" />
+<div class="ui container stackable grid">
+	<div class="four wide column">
+		<div class="ui secondary vertical pointing blue menu">
+		<volist name="catelist" id="vo">
+		<a class="item <if condition='$vo[cate_id] eq $cate_id'>active</if>" href="{:U('Document/dlist',array('id'=> $vo['cate_id']))}">
+		<i class="folder outline icon"></i> {$vo.catename}
+		</a>
+		</volist>
+		</div>
+	</div>
+	<div class="twelve wide column">
+		<div class="ui breadcrumb">
+			<a class="section">主页</a>
+			<i class="right chevron icon divider"></i>
+			<a class="section">分类</a>
+			<i class="right chevron icon divider"></i>
+			<div class="section">{$title}</div>
+		</div>
+		<div class="typo typo-selection">
+			<h1> {$title} </h1>
+			<div class="ui divider"></div>
+			<div class="content"> {$content|htmlspecialchars_decode} </div>
+		</div>
+	</div>
+</div>
+<style>
+.typo p{ margin-bottom:0; line-height:1.8em;}
+</style>
+<include file="Public/foot" />

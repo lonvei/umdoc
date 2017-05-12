@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>优盟CMS帮助管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="/Statics/semantic/semantic.min.css" rel="stylesheet">
+<link href="/Statics/css/style.css" rel="stylesheet">
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<style></style>
+</head>
+<body class="um" style=" padding-top:200px;">
+<div class="ui four column centered grid" >
+	<form class="ui form column segment" data-url="{:U('Login/index')}">
+		<div class="field">
+			<h2 class="ui header">
+			<i class="user icon"></i>
+			<div class="content">
+			账户登陆
+			<div class="sub header">优盟帮助系统管理</div>
+			</div>
+			</h2>
+		</div>
+		<div class="ui divider"></div>
+		
+		  <div class="ui error message">
+			<div class="header">登陆失败</div>
+			<p></p>
+		  </div>
+  
+		<div class="field ">
+			<div class="ui icon input">
+				<input type="text" name="log" placeholder="用户名">
+				<i class="user icon"></i> </div>
+		</div>
+		<div class="field ">
+			<div class="ui icon input">
+				<input type="password" name="pwd" placeholder="密码">
+				<i class="lock icon"></i> </div>
+		</div>
+		<div class="field "> <button id="js-login" type="button" class="ui right blue labeled icon button fluid"> 登陆<i class="right arrow icon"></i> </button> </div>
+	</form>
+</div>
+<script>
+$("#js-login").click(function(){
+	var url = $("form").data("url");
+	console.log(url);
+	var data =  $("form").serialize();
+	$.post(url,data,function(res){
+		console.log(res);	
+		if(res.status){
+			window.location.href = "wei.php?"+res.url;
+		}else{
+			$("form").addClass("error");
+			$(".ui.error.message p").html(res.info);
+		}
+	},'json');
+})
+</script>
+</body>
+</html>

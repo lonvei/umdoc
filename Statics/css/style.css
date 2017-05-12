@@ -1,0 +1,47 @@
+::-webkit-scrollbar{width:5px;height:5px; background:#f3f3f3;}
+::-webkit-scrollbar-thumb{border-radius:0px;background:rgba(0,0,0,.2);}
+::-webkit-scrollbar-thumb:window-inactive{background:rgba(0,0,0,.1)}
+::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.3)}
+::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.7)}
+
+	html,body{ height:100%; font-family: Verdana, '微软雅黑';}
+	.um.document{ height:100%;}
+	.um.document > .column{ position:relative}
+	.um.cate{  background:#f8f8f8;margin-bottom:-1rem;}
+	.um.listbar{border-right:#efefef solid 1px; border-left:#efefef solid 1px;background:#fff;margin-bottom:-1rem; }
+	.um.content{overflow-y :scroll;margin-bottom:-1rem;}
+	
+	.edit.tool{ position:absolute; top:2rem; right:1rem;}
+	
+	.um.hd{height:4.5rem; border-bottom:#efefef solid 1px;}
+	.um.bd{ position:absolute;left:0; bottom:0; width:100%; padding:.48rem; background:#f9f9f9; border-top:#efefef solid 1px;text-align:center; font-size:.8rem;}
+	.um.cd{position:absolute; top:4.5rem; left:-1rem; right:-1rem; bottom:0;   margin-top:0; }
+	
+	.um.creat{ padding:1rem;}
+	
+	.um.cate{ margin-right:-1rem !important;}
+	.um.cate .item{ padding:.8rem 1rem !important; border-bottom:#efefef solid 1px; color:#666 !important; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	.um.cate .item:hover{ background:#f5f5f5;}
+	.um.cate .item.active,.um.cate .item.active i.icon{ background:#4183c4; color:#fff !important;}
+	
+	.um.listpage{ position:absolute; top:5.5rem; left:1rem; bottom:1rem; width:100%; margin-left:-1rem;margin-right:-1rem; margin-top:0;overflow-x:hidden; overflow-y:hidden; }
+	.um.listpage:hover{overflow-y:auto;}
+	.um.listpage .item{ padding:.8rem 1rem !important; border-bottom:#efefef solid 1px; color:#666 !important; font-size:12px;}
+	.um.listpage .item:hover{ background:#f5f5f5;}
+	.um.listpage .item .content{overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+	.um.listpage .item .um.edit-group{ display:none;}
+	.um.listpage .item:hover .um.edit-group{ display:block;}
+	.um.listpage .item:hover .um.edit-group i{cursor:pointer}
+	.um.listpage .item:hover .um.edit-group i:hover{ color:#06C;}
+	.um.listpage .item .um.time{ color:#999;}
+	.um.listpage .item:hover .um.time{ display:none;}
+	
+	.um.search{ height:4.5rem; border-bottom:#efefef solid 1px; padding:.8rem 1rem; margin-left:-1rem;margin-right:-1rem;}
+	.um.loadmore{ text-align:center;}
+	
+	.um.title{ height:4.5rem; border-bottom:#efefef solid 1px; padding:.8rem 1rem; margin-left:-1rem !important;margin-right:-1rem !important;}
+	.um.title .input{padding: .67861em 0em; border-top:solid 1px transparent!important;}
+	
+	/**loading 修正**/
+	.ui.loading:before{ z-index:1000000 !important;}
+	.ui.loading:after{ z-index:1000001 !important;}

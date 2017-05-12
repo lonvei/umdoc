@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>编辑-优盟CMS帮助管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="/Statics/semantic/semantic.min.css" rel="stylesheet">
+<link href="/Statics/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/Statics/wangEditor/css/wangEditor.min.css">
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<style>
+body.um{ background:#f6f6f6;}
+.um.container{ position:relative; width:850px;  margin:1rem auto 3rem auto; padding:1rem; background:#fff;box-shadow:0 0 3px 5px #00;  }
+.wangEditor-container{ border: 0px solid #ccc;}
+.edit.tool2 {position: fixed; bottom:0; left:0; width:100%; padding:.5rem 0; text-align:center; z-index:9999; background:rgba(0,0,0,.1);}
+
+</style>
+</head>
+<body class="um">
+<div class="um container">
+<div class="ui um document">
+		<form id="form-edit" action="{:U('Index/update')}" method="post" class="ui form" data-id="" style="height:100%;">
+			<input type="hidden" name="id" v-model="det.id" value="{$id}">
+			<input type="hidden" name="cate_id" v-model="det.cate_id" value="{$cate_id}">
+			<div class="field um title">
+				<div class="ui transparent input">
+					<input type="text" name="title" placeholder="文档标题" value="{$title}">
+				</div>
+			</div>
+			<div class="field um cd"> 
+				<textarea id="container" name="content" style="height:900px;" rows="50">{$content}</textarea>
+				<!--<div id="container" style="height:600px;"></div>-->
+			</div>
+		</form>
+		<div class="um edit tool2">
+			<button type="button" id="js-btn-content" class="ui blue labeled  icon button" ><i class="right arrow icon"></i>保存</button>
+		</div>
+</div>
+</div>
+<script src="//cdn.bootcss.com/semantic-ui/2.2.9/semantic.min.js"></script> 
+<script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script> 
+<script type="text/javascript" src="/Statics/semanticMenu-plug/semanticMenu.min.js"></script> 
+<script>
+	$("#js-btn-content").click(function(){
+		layer.msg('正在保存中', {icon:16,shade: 0.3,});
+		var url = $("#form-edit").attr("action");
+		var data = $("#form-edit").serialize();
+		$.post(url,data,function(res){
+			if(res){
+			 	layer.msg(res.info,{icon:6});
+			}
+		},'json');
+	})
+</script>
+<!--编辑器--> 
+<script type="text/javascript" src="/Statics/wangEditor/js/wangEditor.min.js"></script> 
+<script type="text/javascript">
+   wangEditor.config.printLog = false;
+    var editor = new wangEditor('container');
+	//editor.config.menuFixed = false;
+	editor.config.pasteText = true;
+    editor.config.uploadImgUrl = '{:U("Index/upload")}';
+	editor.config.menus = $.map(wangEditor.config.menus, function(item, key) {
+	  if (item === 'bgcolor' || item === 'location' || item === 'emotion' || item === 'fontfamily' || item === 'redo' || item === '|') {
+		  return null;
+	  }
+	  return item;
+	});
+	editor.create();
+</script> 
+<!--编辑器--> 
+
+</body>
+</html>

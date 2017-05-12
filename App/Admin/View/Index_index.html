@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>优盟CMS帮助管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="/Statics/semantic/semantic.min.css" rel="stylesheet">
+<link href="/Statics/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/Statics/wangEditor/css/wangEditor.min.css">
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<style></style>
+</head>
+<!-- 分页 http://baijunyao.com/article/88 -->
+<body class="um">
+<div class="ui grid um document">
+	<div class="two wide column um cate">
+		<div class="ui um hd">
+			<div class="um creat"><a href="javascript:;" id="js-creat" class="ui inverted blue button fluid"><i class="edit icon"></i>新建</a></div>
+		</div>
+		<div id="js-cate" class="ui list um cate"> <a class="active item" data-id="0"><i class="folder outline icon"></i> 全部分类</a>
+			<volist name="cate" id="vo"> <a class="item" data-id="{$vo.cate_id}"><i class="folder outline icon"></i> {$vo.catename}</a> </volist>
+		</div>
+		<div class="um bd"><i class="user icon"></i>{$Think.session.username}，<a href="{:U('Login/logout')}"><i class="sign in icon"></i>退出</a></div>
+	</div>
+	<div id="list-page" class="four wide column um listbar">
+		<div class="um list search">
+			<div class="ui fluid icon input">
+				<input id="js-search" type="text" name="key" placeholder="输出关键词回车搜索...">
+				<i class="search icon"></i> </div>
+		</div>
+		<div  class="ui list um listpage">
+			<div class="ui active inverted dimmer js-loader" style="display:none;">
+				<div class="ui text loader">加载</div>
+			</div>
+			<template v-for="(item,index) in items">
+			<div class="item">
+				<div class="right floated compact ui"> <span class="um time"><i class="wait icon"></i>{{ item.create_time | time }}</span> <span class="um edit-group"><i class="empty star icon"></i> <i class="unhide icon" :data-id="item.id" v-on:click="openurl"></i></span></div>
+				<div class="content"><a class="item-href" :data-index="index" :data-id="item.id" v-on:click="greet"><i class="file text outline icon"></i>{{ item.title }}</a></div>
+			</div>
+			</template> <a id="js-loadmore" class="item um loadmore"> <i class="angle double down icon"></i> 加载更多..</a> </div>
+		<div class="um bd">当前显示{{items.length}}项<!--/{$count}-->
+			<form id="form-list">
+				<input type="hidden" name="p" value="1">
+			</form>
+		</div>
+	</div>
+	<div class="ten wide column um content">
+		<form id="form-edit" action="{:U('Index/update')}" method="post" class="ui form" data-id="" style="height:100%;">
+			<input type="hidden" name="id" v-model="det.id">
+			<input type="hidden" name="cate_id" v-model="det.cate_id">
+			<div class="field um title">
+				<div class="ui transparent input">
+					<input type="text" name="title" placeholder="文档标题" v-model="det.title">
+				</div>
+			</div>
+			<div class="field um cd"> 
+				<textarea id="container" name="content" style="height:600px;" rows="16"></textarea>
+				<!--<div id="container" style="height:600px;"></div>-->
+			</div>
+		</form>
+		<div class="um edit tool">
+			<button type="button" id="js-btn-content" class="ui blue labeled  icon button"><i class="right arrow icon"></i>保存</button>
+		</div>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/semantic-ui/2.2.9/semantic.min.js"></script> 
+<script src="//cdn.bootcss.com/vue/2.2.6/vue.min.js"></script> 
+<script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script> 
+<script type="text/javascript" src="/Statics/semanticMenu-plug/semanticMenu.min.js"></script> 
+<script>
+var menu = new BootstrapMenu('#js-cate .item', {
+  fetchElementData: function($rowElem) {
+    	var rowId = $rowElem.data('id');
+		return rowId;
+  },
+  actions: [{
+      name: '新建分类',
+	  iconClass: 'add square icon',
+      onClick: function(row) {
+		layer.prompt({title: '新建分类', formType: 0}, function(text, index){
+			layer.close(index);
+			var url = '{:U("Index/cate_update")}';
+			var data={catename:text,parent_id:row};
+			$.post(url,data,function(res){
+				layer.msg(res.info);
+			},'json');
+		});
+      }
+    }, {
+      name: '重命名',
+	  iconClass: 'edit icon',
+      onClick: function(row) {
+		layer.prompt({title: '修改分类名', formType: 0}, function(text, index){
+			layer.close(index);
+			var url = '{:U("Index/cate_update")}';
+			var data={catename:text,cate_id:row};
+			$.post(url,data,function(res){
+				layer.msg(res.info);
+			},'json');
+		});
+      }
+    }, {
+      name: '删除',
+	  iconClass: 'remove circle icon',
+      onClick: function(row) {
+        layer.msg("分类不能删除!");
+      }
+  }]
+});
+var menu2 = new BootstrapMenu('.um.listpage .item', {
+  fetchElementData: function($rowElem) {
+		//console.log($rowElem);
+    	var rowId = $rowElem.find(".item-href").data('index');
+    	//return vm_list.items[rowId];
+		return rowId;
+  },
+  actions: [{
+    name: '浏览',
+	iconClass: 'ui empty circular label',
+    onClick: function(row) {
+		window.open("Document/view/?id="+vm_list.items[row].id, "_blank"); 
+    }
+  },{
+    name: '编辑',
+	iconClass: 'ui empty circular label',
+    onClick: function(row) {
+		window.open("/wei.php?c=Index&a=docedit&id="+vm_list.items[row].id, "_blank"); 
+    }
+  },{
+    name: '移动分类到',
+	iconClass: 'ui blue  empty circular label',
+    onClick: function(row) {
+      layer.open({title:"移动分类到", btn: ['保存修改', '取消'],content: $("#js-cate-form").html(),
+	  yes: function(index, layero){
+    	var data = { id:vm_list.items[row].id, cate_id:$("#js-cate-form-show #f_cate_id").val()};
+		$.post("{:U('Index/update')}",data,function(res){
+			layer.msg(res.info, {icon: 1});
+		},'json')
+			
+		
+	  }
+	  });
+	  //layer.msg("'Edit name' clicked on '" + row.title + "'");
+    }
+  }, {
+    name: '删除',
+	iconClass: 'ui red  empty circular label',
+    onClick: function(row) {
+      layer.confirm("删除" + vm_list.items[row].title ,function(){
+		 $.get("{:U('Index/delete')}",{ id:vm_list.items[row].id },function(res){
+			if(res.status){
+				layer.msg(res.info, {icon: 1});
+				vm_list.items.splice(row,1);
+			}	
+		 },'json');
+	  } )
+    }
+  }, 
+//  {
+//    name: 'Edit description',
+//	iconClass: 'ui black  empty circular label',
+//    onClick: function(row) {
+//      layer.msg("'Edit description' clicked on '" + row.name + "'");
+//    }
+//  }
+  ]
+});
+</script> 
+<script type="text/javascript">
+
+ var list = {$list};
+ var catname = '分类名称';
+ var p=1;
+</script> 
+<script type="text/javascript">
+Vue.filter('time', function (value) {
+	var myDate = new Date(parseInt(value) * 1000);
+	var d = "0"+myDate.getMonth();
+	var m = "0"+myDate.getDate();
+	return d.substring(d.length-2,d.length) + '-' + m.substring(m.length-2,m.length); 
+	//return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+})
+
+	//加载内容编辑
+	var vm_details = new Vue({
+	el:"#form-edit",
+	data:{det:''}
+	})
+	//加载列表
+	var vm_list = new Vue({
+	el: '#list-page',
+	data: {
+		parentMessage: catname,
+		items: list
+	},
+	methods:{
+		greet: function (event){
+			//alert(event.target.tagName);
+			console.log(event.target);
+			console.log($(event.target));
+			//alert($(event.target).data("id"));
+			//$("#form-edit").data("id",$(event.target).data("id")) ;
+			$("#form-edit").attr("data-id",$(event.target).attr("data-index")) ;
+			edit_loading(true);
+			$.get("{:U('Index/details')}",{id:$(event.target).attr("data-id")},function(res){
+				console.log(res);
+				//vm_details.$set(det,res);
+				res.content = res.content;
+				Vue.set(vm_details,"det",res);
+				//UM.getEditor('container').setContent('888', false);
+				//um.setContent(res.content, false);
+				editor.$txt.html(res.content);
+				//um.addListener("ready", function () {console.log(res.content);});
+				edit_loading(false);
+				//um.execCommand('inserthtml', res.content);
+			},"json")
+		},
+		openurl: function(event){
+			var id= $(event.target).attr("data-id");
+			window.open("Document/view/?id="+id, "_blank"); 
+		}
+		
+	}
+	})
+	//um.addListener("ready", function () {um.setContent('aaa');});	
+	//提交内容编辑
+	$("#js-btn-content").click(function(){
+		if($("#form-edit input[name='cate_id']").val()<=0) {layer.msg("请先选择左侧分类",{icon:7});return false;}
+		if($("#form-edit input[name='title']").val()<=0) {layer.msg("请填写标题",{icon:7});return false;}
+		edit_loading(true);
+		var url = $("#form-edit").attr("action");
+		var data = $("#form-edit").serialize();
+		$.post(url,data,function(res){
+			console.log(res);
+			if(res){
+				var index = $("#form-edit").data("id");
+				var id = $("#form-edit input[name='id']").val();
+				if(id){
+			 		vm_list.items[index].title = $("#form-edit input[name='title']").val();
+				}else{
+					//vm_list.items.push({title:$("#form-edit input[name='title']").val()});
+					var new_item = [];
+					new_item.push(res.data);
+					new_item=new_item.concat(vm_list.items); 
+					Vue.set(vm_list,"items",new_item);
+					$("#form-edit input[name='id']").val(res.data.id);
+					$("#form-edit").data("id",0)
+				}
+			 //console.log(list[$("#form-edit").data("id")].title);
+			 //console.log(list);
+			 	layer.msg(res.info,{icon:6},function(index){
+				edit_loading(false);
+			});
+			}
+		},'json');
+	})
+	
+	//创建
+	$("#js-creat").click(function(){
+		Vue.set(vm_details,"det",'');
+		//um.setContent('', false);
+		editor.$txt.html('<p><br></p>');
+		$("#form-edit")[0].reset();
+		$("#form-edit input[name='cate_id']").val($("#js-cate a.active").data("id"));
+	});
+	
+	//分类展示
+	$("#js-cate .item").click(function(){
+		$("#js-cate .item").removeClass("active");
+		$(this).addClass("active");
+		$(".listpage .js-loader").show();
+		var id = $(this).data("id");
+		$.get("{:U('Index/ajax_list')}",{cate_id:id},function(data){
+			//vm_list.items=data; 
+			Vue.set(vm_list,"items",data);
+			$(".listpage .js-loader").hide();
+		},"json")
+		$("#form-edit input[name='cate_id']").val(id);
+	});
+	
+	//js-loadmore加载更多
+	$("#js-loadmore").click(function(){
+		$.get("{:U('Index/ajax_list')}",{p:p+1,cate_id:$("#js-cate a.active").data("id")},function(data){
+			console.log(data);
+			if(data.length>0){
+				p++;
+				vm_list.items=vm_list.items.concat(data); 
+				$("#list-page").animate({scrollTop: $("#list-page").scrollTop()+40});
+			}else{
+				$("#js-loadmore").remove();
+			}
+		},"json")
+	});
+
+	//搜索标题
+	$("#js-search").keyup(function(){
+        if(event.keyCode == 13){
+            var k = $(this).val();
+			if(k.length<1) {
+				layer.msg("请输入搜索关键词",{icon:7});
+				return false;
+			}
+			console.log(k);
+			$.get("{:U('Index/ajax_list')}",{key:k},function(data){
+				vm_list.items=data; 
+				$(".listpage .js-loader").hide();
+			},"json")
+        }
+    });
+	
+	//html转义
+    function htmlspecialchars_decode(html){
+    if(!html) return '';
+	return html
+      .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, "\"")
+      .replace(/&#39;/g, "\'");
+  }
+	//编辑页状态
+	function edit_loading(status){
+		if(status){
+			$("#form-edit").addClass("loading");
+		}else{
+			$("#form-edit").removeClass("loading");
+		}
+	}
+</script> 
+<!--编辑器--> 
+<script type="text/javascript" src="/Statics/wangEditor/js/wangEditor.min.js"></script> 
+<script type="text/javascript">
+   wangEditor.config.printLog = false;
+    var editor = new wangEditor('container');
+	editor.config.menuFixed = false;
+	editor.config.pasteText = true;
+    editor.config.uploadImgUrl = '{:U("Index/upload")}';
+	editor.config.menus = $.map(wangEditor.config.menus, function(item, key) {
+	  if (item === 'bgcolor' || item === 'location' || item === 'emotion' || item === 'fontfamily' || item === 'redo' || item === '|') {
+		  return null;
+	  }
+	  return item;
+	});
+	editor.create();
+</script> 
+<!--编辑器--> 
+<script type="text/html" id="js-cate-form">
+<form action="{:U('Index/update')}" id="js-cate-form-show">
+<div class="ui form">
+	<div class="field">
+	<select name="cate_id" id="f_cate_id" class="ui dropdown">
+	<volist name="cate" id="vo">
+	<option value="{$vo.cate_id}">{$vo.catename}</option>
+	</volist>
+    </select>
+	</div>
+</div>
+</form>
+</script>
+</body>
+</html>
