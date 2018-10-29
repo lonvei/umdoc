@@ -14,7 +14,7 @@ class IndexController extends Controller {
 
 
         $map = array();
-        if(session("groupid")!=1) $map['user_id'] = session("userid");
+        // if(session("groupid")!=1) $map['user_id'] = session("userid");
         $count = M("Document")->where($map)->count();
 
         $limit=20;
@@ -30,7 +30,7 @@ class IndexController extends Controller {
 
     public function ajax_list(){
         $map = array();
-        if(session("groupid")!=1) $map['user_id'] = session("userid");
+        // if(session("groupid")!=1) $map['user_id'] = session("userid");
         if(I("get.cate_id")) $map['cate_id'] = I("get.cate_id");
         if(I("get.key")) $map['title'] = array("LIKE","%".I("get.key")."%");
         $count = M("Document")->where($map)->count();
