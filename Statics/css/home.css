@@ -1,0 +1,67 @@
+.doc{}
+.doc.card{ margin-top: 15px; }
+.doc.card .list .item{ padding: 3px 0; }
+.doc.header{
+	height: 80px;
+margin: 0px;
+display: flex;
+padding: 0px;
+z-index: 20;
+position: relative;
+box-shadow: rgba(116, 129, 141, 0.1) 0px 3px 8px 0px;
+border-bottom: 1px solid rgb(212, 218, 223);
+background-color: rgb(255, 255, 255);
+z-index: 99;
+}
+.doc.container{
+	inset: 0px;
+margin: 0px;
+display: flex;
+padding: 0px;
+z-index: 29;
+position: absolute;
+top:80px;
+/*align-items: center;*/
+animation-name: none;
+/*pointer-events: none;*/
+/*justify-content: center;*/
+/*-moz-box-pack: center;*/
+background-color: rgba(24, 48, 85, 0);
+-moz-box-align: center;
+transition: background-color 250ms ease-out 0s;
+animation-duration: 0.2s;
+animation-fill-mode: forwards;
+animation-timing-function: ease-out;
+}
+.doc.sider{
+	flex: 0 0 auto;
+width: calc(50% - 426px);
+display: flex;
+z-index: 15;
+min-width: 298px;
+background: rgb(245, 247, 249) none repeat scroll 0% 0%;
+align-items: stretch;
+border-right: 1px solid rgb(230, 236, 241);
+padding-left: calc(50% - 724px);
+flex-direction: column;
+-moz-box-align: stretch;
+-moz-box-orient: vertical;
+-moz-box-direction: normal;
+}
+.doc.main{
+    flex: 1 1 auto;
+    margin: 0px;
+    display: flex;
+    padding: 0px 88px;
+    max-width: 100%;
+    min-width: 0px;
+    background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+    flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+}
+
+.doc.cate{ padding: 20px; }
+
+.doc.pagebar{ padding: 15px 0; }
+.doc.pagebar .item{ display: inline-block; padding: 3px 15px; margin-right: 5px; border: #eee solid 1px; border-radius: 3px; }

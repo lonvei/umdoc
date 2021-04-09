@@ -1,22 +1,19 @@
 <include file="Public/head" />
-<div class="ui container">
-	<div class="ui three column grid">
+
+	<div class="doc main">
 		<volist name="catelist" id="vo">
 			<div class="column">
-				<div class="ui vertical  segment">
-					<h3 class="" style=" text-align: center;">{$vo.catename}</h3>
-					<div class="ui horizontal divider">
-						<i class=" empty star icon"></i>
-					</div>
-					<div class="ui relaxed list">
+				<div class="doc card">
+					<h3>{$vo.catename}</h3>
+					<div class="list">
 						<php>$list = M("Document")->field(array("user_id","content"),true)->where("cate_id=$vo[cate_id]")->order("id desc")->limit(10)->select();</php>
 						<volist name="list" id="r">
-						<a class="item" href="{:U('Document/view',array('id'=>$r[id]))}">{$r.title}</a> 
+						<div class="item"><a class="link" href="{:U('Document/view',array('id'=>$r[id]))}">{$r.title}</a></div>
 						</volist>
 					</div>
 				</div>
 			</div>
 		</volist>
 	</div>
-</div>
+
 <include file="Public/foot" />

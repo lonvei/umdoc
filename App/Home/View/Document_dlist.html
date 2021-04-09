@@ -1,34 +1,13 @@
 <include file="Public/head" />
-<div class="ui container stackable grid">
-	<div class="four wide column">
-		<div class="ui secondary vertical pointing blue menu">
-		<volist name="catelist" id="vo">
-		<a class="item <if condition='$vo[cate_id] eq $cate_id'>active</if>" href="{:U('Document/dlist',array('id'=> $vo['cate_id']))}">
-		<i class="folder outline icon"></i> {$vo.catename}
-		</a>
-		</volist>
-		</div>
-	</div>
-	<div class="twelve wide column">
-<!--		<div class="ui breadcrumb">
-			<a class="section">主页</a>
-			<i class="right chevron icon divider"></i>
-			<a class="section">分类</a>
-			<i class="right chevron icon divider"></i>
-			<div class="section">{$title}</div>
-		</div>-->
-		<h2 class="">二级标题</h2>
-		<div class="ui divider"></div>
-		<div class="um view">
-			<div class="ui relaxed list">
+
+	<div class="doc main">
+		<div class="ui relaxed list">
 			<volist name="list" id="vo">
-				<a class="item" href="{:U('Document/view',array('id'=>$vo[id]))}">{$vo.title}</a>
+				<div class="item"><a class="link" href="{:U('Document/view',array('id'=>$vo[id]))}">{$vo.title}</a></div>
 			</volist>
 			</div>
 		
-			<div class="um pagebar">{$pagebar}</div>
-		</div>
-		
+			<div class="doc pagebar">{$pagebar}</div>
 	</div>
-</div>
+
 <include file="Public/foot" />

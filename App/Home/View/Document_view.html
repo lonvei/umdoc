@@ -1,31 +1,14 @@
 <include file="Public/head" />
-<div class="ui container">
-		<div class="ui breadcrumb">
-			<a class="section">主页</a>
-			<i class="right chevron icon content"></i>
-			<a class="section">分类</a>
-			<i class="right chevron icon divider"></i>
-			<div class="section">{$title}</div>
-		</div>
-</div>
-<div class="ui container stackable grid um docpaget">
-	<div class="three wide column um sidebar" style="padding:0;">
-		<div class="ui vertical pointing menu fluid" style="border: 0;    box-shadow: none;">
-		<volist name="catelist" id="vo">
-		<a class="item <if condition='$vo[cate_id] eq $cate_id'>active</if>" href="{:U('Document/dlist',array('id'=> $vo['cate_id']))}">
-		<i class="folder outline icon"></i> {$vo.catename}
-		</a>
-		</volist>
-		</div>
-	</div>
-	<div class="thirteen wide column um contenter" style="padding:0 3rem;">
+
+	<div class="doc main">
 		<div class="typo typo-selection">
 			<h1> {$title} </h1>
 			<div class="ui divider"></div>
 			<div class="um docbd"> {$content|htmlspecialchars_decode} </div>
 		</div>
 	</div>
-</div>
+
+
 <style>
 body{ background:#efefef;}
 .um.docpaget{ margin-top:20px;border:#d9dadc solid 1px; background:#fff; overflow:hidden;}
